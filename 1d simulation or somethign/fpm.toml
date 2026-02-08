@@ -1,0 +1,14 @@
+name = "killme"
+version = "1"
+
+[build]
+link = ["blas", "lapack"]
+
+[dependencies]
+stdlib = "*"
+# { git = "https://github.com/fortran-lang/stdlib" }
+
+[[executable]]
+name = "main"
+source-dir = "."
+main = "main.f90"

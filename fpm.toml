@@ -1,0 +1,13 @@
+name = "killme"
+version = "1"
+
+[build]
+link = ["blas", "lapack"]
+
+[dependencies]
+stdlib = "*"
+
+[[executable]]
+name = "testing"
+source-dir = "src"
+main = "testing.f90"
