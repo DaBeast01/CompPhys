@@ -1,0 +1,9 @@
+.vscode/
+ext/
+src/
+example\ code/
+
+testing.cpp
+fpm.toml
+
+1d\ simulation\ or\ somethign
