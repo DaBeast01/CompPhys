@@ -32,7 +32,7 @@ int main() {
 
     umat = kmat.lu().solve(fmat);
 
-    for(int i = 0; i < N; i++) {
+    for (int i = 0; i < N; i++) {
         printf("%f ", umat(i));
         printf("%f\n", fmat(i));
     }

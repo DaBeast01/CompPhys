@@ -3,7 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/ext/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -11,10 +11,31 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.26100.0",
-            "compilerPath": "cl.exe",
             "cStandard": "gnu23",
             "cppStandard": "gnu++26",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "c:/Users/ncif0/OneDrive/Documents/Code stuff/CompPhys/**",
+                "${workspaceFolder}/ext"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "/usr/bin/g++",
+            "compilerPathInCppPropertiesJson": "\\usr\\bin\\g++",
+            "mergeConfigurations": false,
+            "recursiveIncludes": {},
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "intelliSenseMode": "linux-gcc-x64",
+            "cStandard": "gnu23",
+            "cppStandard": "gnu++23"
         }
     ],
     "version": 4
