@@ -1,38 +1,22 @@
-#include <iostream>
-#include <cmath>
-#include "Eigen/Dense"
-#include <cstdlib>
-#include <fstream>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <cmath>
 
 using namespace std;
-using namespace Eigen;
-
-// Computes a mesh of N x N nodes in the boundary of a square of sides length 2 centered around the origin (boundaries are +-1 in the x and y)
-// Function is f = e^xy
-
-const int N = 4;
 
 typedef vector<tuple<float, float>> mesh;
- 
-void integration(vector<float> basis);
-vector<float> base(vector<float> points);
+const int N = 4;
 mesh pointgen(int n);
 vector<float> functcalc(mesh points);
 
 int main() {
-    mesh points = pointgen(N);
+    mesh points = pointgen(4);
     vector<float> fmat = functcalc(points);
-
-}
-
-void integration(VectorXf basis) {
-    return;
-}
-
-vector<float> base(vector<float> points) {
-    
-    return;
+    for (int i = 0; i < 16; i++) {
+        printf("%f\n", fmat[i]);
+    }
+    return 0;
 }
 
 mesh pointgen(int n) {
