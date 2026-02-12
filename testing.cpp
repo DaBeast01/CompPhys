@@ -1,40 +1,24 @@
-#include <iostream>
-#include <cmath>
-#include <NumCpp.hpp>
-#include <cstdlib>
-#include <fstream>
 #include <vector>
+#include <iostream>
+#include <NumCpp.hpp>
+#include <fstream>
+#include <cmath>
 
 using namespace std;
-using namespace Eigen;
 using namespace nc;
 
-// Computes a mesh of N x N nodes in the boundary of a square of sides length 2 centered around the origin (boundaries are +-1 in the x and y)
-// Function is f = e^xy
-
-const int N = 4;
-
 typedef vector<tuple<float, float>> mesh;
- 
-void integration(vector<float> basis);
-vector<float> base(vector<float> points);
+const int N = 4;
 mesh pointgen(int n);
 vector<float> functcalc(mesh points);
 
 int main() {
-    mesh points = pointgen(N);
+    mesh points = pointgen(4);
     vector<float> fmat = functcalc(points);
-
-}
-
-void integration(vector<float> basis) {
-    
-    return;
-}
-
-vector<float> base(vector<float> points) {
-    
-    return;
+    for (int i = 0; i < 16; i++) {
+        printf("%f\n", fmat[i]);
+    }
+    return 0;
 }
 
 mesh pointgen(int n) {
@@ -53,7 +37,8 @@ vector<float> functcalc(mesh points) {
     for (int i = 0; i < N*N; i++) {
         x = get<0>(points[i]);
         y = get<1>(points[i]);
-        //function is e^xy (you can change it to whatever)
+        printf("(%f, %f)\n", x, y);
+        //function is e^xy
         fmat.push_back(exp(x*y));
     }
     return fmat;

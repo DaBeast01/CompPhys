@@ -18,8 +18,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "c:/Users/ncif0/OneDrive/Documents/Code stuff/CompPhys/**",
-                "${workspaceFolder}/ext"
+                "${workspaceFolder}/ext/**"
             ],
             "defines": [
                 "_DEBUG",
