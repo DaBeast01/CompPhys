@@ -1,48 +1,46 @@
-#include <iostream>
-#include <cmath>
-#include <NumCpp.hpp>
-#include <cstdlib>
-#include <fstream>
 #include <vector>
+#include <iostream>
+#include <NumCpp.hpp>
+#include <fstream>
+#include <cmath>
+#include <array>
+#include <map>
+#include "femfunctions.hpp"
 
 using namespace std;
-using namespace Eigen;
 using namespace nc;
 
-// Computes a mesh of N x N nodes in the boundary of a square of sides length 2 centered around the origin (boundaries are +-1 in the x and y)
-// Function is f = e^xy
-
-const int N = 4;
-
-typedef vector<tuple<float, float>> mesh;
- 
-void integration(vector<float> basis);
-vector<float> base(vector<float> points);
 mesh pointgen(int n);
 vector<float> functcalc(mesh points);
+basis sparseMat();
 
 int main() {
     mesh points = pointgen(N);
     vector<float> fmat = functcalc(points);
-
-}
-
-void integration(vector<float> basis) {
-    
-    return;
-}
-
-vector<float> base(vector<float> points) {
-    
-    return;
+    basis kmat = sparseMat();
+    for (int i = 0; i < B; i++) {
+        for (int j = 0; j < B; j++) {
+            printf("%i, ", kmat[i][j]);
+        }
+        printf("\n");
+        //printf("%f\n", fmat[i]);
+    }
+    return 0;
 }
 
 mesh pointgen(int n) {
     mesh nodes;
-    for (int i = 0; i < n; i++) {
+    for (int i = n - 1; i >= 0; i--) {
         for (int j = 0; j < n; j++) {
-            nodes.push_back({(float) (2*i)/(n-1) - 1, (float) (2*j)/(n-1) - 1});
+            nodes.push_back({(float) (2*j)/(n-1) - 1, (float) (2*i)/(n-1) - 1});
         }
+
+        for (int j = 0; j < n - 1; j++) {
+            nodes.push_back({(float)(2*j + 1)/(n-1) - 1, (float) (2*i - 1)/(n-1) - 1});
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        nodes.push_back({(float) (2*i)/(n-1) - 1, (float) -1});
     }
     return nodes;
 }
@@ -50,10 +48,11 @@ mesh pointgen(int n) {
 vector<float> functcalc(mesh points) {
     vector<float> fmat;
     float x, y;
-    for (int i = 0; i < N*N; i++) {
+    for (int i = 0; i < B; i++) {
         x = get<0>(points[i]);
         y = get<1>(points[i]);
-        //function is e^xy (you can change it to whatever)
+        //printf("(%f, %f)\n", x, y);
+        //function is e^xy
         fmat.push_back(exp(x*y));
     }
     return fmat;

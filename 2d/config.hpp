@@ -1,0 +1,11 @@
+#pragma once
+
+// The number of nodes on the side of the square mesh (mesh is NxN)
+const int N = 5;
+
+// Total number of nodes in the mesh
+const int B = (2*N - 1)*(N - 1) + N;
+
+// Unit distance of the mesh (for the bounds from -1 to 1).
+// If you change the bounds of the mesh, just put the length of the side of the square in the numerator
+const int h = 2/N
