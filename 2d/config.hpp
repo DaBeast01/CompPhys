@@ -1,7 +1,7 @@
 #pragma once
 
 // The number of nodes on the side of the square mesh (mesh is NxN)
-const int N = 20;
+const int N = 5;
 
 // Total number of nodes in the mesh
 const int B = (2*N - 1)*(N - 1) + N;

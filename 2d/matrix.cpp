@@ -1,6 +1,6 @@
 #include <vector>
 #include <iostream>
-#include "Eigen/Dense"
+#include "Eigen/IterativeLinearSolvers"
 #include <fstream>
 #include <cmath>
 #include <map>
@@ -19,24 +19,27 @@ int main() {
     mesh points = pointgen(N);
     vector<float> fcmat = functcalc(points);
     basisMap basisInfo = basisHash();
-    vector<int> matching;
     float value;
-    MatrixXf kmat = MatrixXf::Zero(B, B);
+    MatrixXf kdmat = MatrixXf::Zero(B, B);
     VectorXf umat = VectorXf::Zero(B);
+    cout << "WORKS" << endl;
     VectorXf fmat = Eigen::Map<VectorXf>(fcmat.data(), fcmat.size());
-
-
+    cout << "WORKS" << endl;
+    #pragma omp parallel for
     for (int i = 0; i < B; i++) {
         for (int j = 0; j < B; j++) {
             value = 0;
-            matching = basisCompare(i, j, basisInfo);
+            vector<int> matching = basisCompare(i, j, basisInfo);
             for (int k : matching) {
                 value += (A*((basisInfo[i][k]['x'] * basisInfo[j][k]['x']) + (basisInfo[i][k]['y'] * basisInfo[j][k]['y'])));
             }
-            kmat(i, j) = value;
+            kdmat(i, j) = value;
         }
     }
-    umat = kmat.lu().solve(fmat);
+    SparseMatrix<float> kmat = kdmat.sparseView(1e-5);
+    ConjugateGradient<SparseMatrix<float>, Lower|Upper> slv;
+    slv.compute(kmat);
+    umat = slv.solve(fmat);
     for (float x : umat) {
         cout << x << endl;
     }
@@ -69,7 +72,7 @@ vector<float> functcalc(mesh points) {
         y = get<1>(points[i]);
         //printf("(%f, %f)\n", x, y);
         //function is e^xy
-        fmat.push_back(exp(x*y));
+        fmat.push_back((float)(2*pow(3.14, 2)*sin(3.14*x)*sin(3.14*y)));
     }
     return fmat;
 }
