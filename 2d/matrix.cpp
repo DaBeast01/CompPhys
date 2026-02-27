@@ -1,30 +1,46 @@
 #include <vector>
 #include <iostream>
-#include <NumCpp.hpp>
+#include "Eigen/Dense"
 #include <fstream>
 #include <cmath>
-#include <array>
 #include <map>
 #include "femfunctions.hpp"
+#include <algorithm>
 
 using namespace std;
-using namespace nc;
+using namespace Eigen;
 
 mesh pointgen(int n);
 vector<float> functcalc(mesh points);
 basis sparseMat();
+vector<int> basisCompare(int a, int b, basisMap info);
 
 int main() {
     mesh points = pointgen(N);
-    vector<float> fmat = functcalc(points);
-    basis kmat = sparseMat();
+    vector<float> fcmat = functcalc(points);
+    basisMap basisInfo = basisHash();
+    vector<int> matching;
+    float value;
+    MatrixXf kmat = MatrixXf::Zero(B, B);
+    VectorXf umat = VectorXf::Zero(B);
+    VectorXf fmat = Eigen::Map<VectorXf>(fcmat.data(), fcmat.size());
+
+
     for (int i = 0; i < B; i++) {
         for (int j = 0; j < B; j++) {
-            printf("%i, ", kmat[i][j]);
+            value = 0;
+            matching = basisCompare(i, j, basisInfo);
+            for (int k : matching) {
+                value += (A*((basisInfo[i][k]['x'] * basisInfo[j][k]['x']) + (basisInfo[i][k]['y'] * basisInfo[j][k]['y'])));
+            }
+            kmat(i, j) = value;
         }
-        printf("\n");
-        //printf("%f\n", fmat[i]);
     }
+    umat = kmat.lu().solve(fmat);
+    for (float x : umat) {
+        cout << x << endl;
+    }
+
     return 0;
 }
 
@@ -56,4 +72,38 @@ vector<float> functcalc(mesh points) {
         fmat.push_back(exp(x*y));
     }
     return fmat;
+}
+
+vector<int> basisCompare(int a, int b, basisMap info) {
+    vector<int> basis1, basis2, matching;
+
+    // const b/c not editing (faster) and auto& b/c weird data type
+    // Putting all the basis numbers from the first basis in a vector
+    for (const auto& [key, _] : info[a]) {
+        basis1.push_back(key);
+    }
+
+    for (const auto& [key, _] : info[b]) {
+        basis2.push_back(key);
+    }
+
+    // sort keys for algorithm
+    sort(basis1.begin(), basis1.end());
+    sort(basis2.begin(), basis2.end());
+
+    int i = 0, j = 0;
+    while(i < basis1.size() && j < basis2.size()) {
+        if (basis1[i] < basis2[j]) {
+            i++;
+        }
+        else if (basis2[j] < basis1[i]) {
+            j++;
+        }
+        else {
+            matching.push_back(basis1[i]);
+            i++;
+            j++;
+        }
+    }
+    return matching;
 }

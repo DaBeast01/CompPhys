@@ -2,7 +2,6 @@
 #include "config.hpp"
 #include <vector>
 #include <iostream>
-#include <NumCpp.hpp>
 #include <fstream>
 #include <cmath>
 #include <array>
@@ -12,6 +11,7 @@ using namespace std;
 
 using basis = array<array<int, B>, B>;
 using mesh = vector<tuple<float, float>>;
+using basisMap = map<int, map<int, map<char, float>>>;
 
 basis sparseMat();
-map<map<int, float>> basisHash(int h);
+basisMap basisHash();
