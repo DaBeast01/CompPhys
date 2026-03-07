@@ -19,30 +19,41 @@ int main() {
     mesh points = pointgen(N);
     vector<float> fcmat = functcalc(points);
     basisMap basisInfo = basisHash();
-    float value;
-    MatrixXf kdmat = MatrixXf::Zero(B, B);
+    MatrixXf kmat = MatrixXf::Zero(B, B);
     VectorXf umat = VectorXf::Zero(B);
-    cout << "WORKS" << endl;
     VectorXf fmat = Eigen::Map<VectorXf>(fcmat.data(), fcmat.size());
-    cout << "WORKS" << endl;
+
     #pragma omp parallel for
     for (int i = 0; i < B; i++) {
         for (int j = 0; j < B; j++) {
-            value = 0;
+            float value = 0;
             vector<int> matching = basisCompare(i, j, basisInfo);
             for (int k : matching) {
                 value += (A*((basisInfo[i][k]['x'] * basisInfo[j][k]['x']) + (basisInfo[i][k]['y'] * basisInfo[j][k]['y'])));
             }
-            kdmat(i, j) = value;
+            kmat(i, j) = value;
         }
     }
-    SparseMatrix<float> kmat = kdmat.sparseView(1e-5);
+    SparseMatrix<float> ksmat = kmat.sparseView(1e-5);
     ConjugateGradient<SparseMatrix<float>, Lower|Upper> slv;
-    slv.compute(kmat);
+    slv.compute(ksmat);
     umat = slv.solve(fmat);
-    for (float x : umat) {
-        cout << x << endl;
+
+    fstream fout;
+    fout.open("datanew.csv", ios::out | ios::app);
+
+    // Replace CSV with a clean one
+    remove("data.csv");
+    rename("datanew.csv", "data.csv");
+
+    for (int i = 0; i < B; i++) {
+        fout
+        << get<0>(points[i]) << ","  // x coord
+        << get<1>(points[i]) << ","  // y coord
+        << umat[i] << ","            // z coord
+        << "\n";
     }
+    fout.close();
 
     return 0;
 }
@@ -72,7 +83,7 @@ vector<float> functcalc(mesh points) {
         y = get<1>(points[i]);
         //printf("(%f, %f)\n", x, y);
         //function is e^xy
-        fmat.push_back((float)(2*pow(3.14, 2)*sin(3.14*x)*sin(3.14*y)));
+        fmat.push_back(A*((float)(2*pow(4*atan(1), 2)*sin(4*atan(1)*x)*sin(4*atan(1)*y))));
     }
     return fmat;
 }

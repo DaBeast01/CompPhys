@@ -101,7 +101,6 @@ basisMap basisHash() {
     float phs = (1/(h*sqrt(2)));
     float nh = -1/h;
     float ph = 1/h;
-    cout << "WORKS" << endl;
     for (int i = 0; i < B; i++) {
 
         // Which node in the row it is (index 0)
@@ -247,6 +246,5 @@ basisMap basisHash() {
             hash[i][(4*(N-1)*(N-1))-2]['y'] = nhs;
         }
     }
-    cout << "WORKS" << endl;
     return hash;
 }
