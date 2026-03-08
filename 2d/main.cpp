@@ -19,6 +19,7 @@ int main() {
     mesh points = pointgen(N);
     vector<float> fcmat = functcalc(points);
     basisMap basisInfo = basisHash();
+    vector<int> edges = edgeNodes();
     MatrixXf kmat = MatrixXf::Zero(B, B);
     VectorXf umat = VectorXf::Zero(B);
     VectorXf fmat = Eigen::Map<VectorXf>(fcmat.data(), fcmat.size());
@@ -30,9 +31,19 @@ int main() {
             vector<int> matching = basisCompare(i, j, basisInfo);
             for (int k : matching) {
                 value += (A*((basisInfo[i][k]['x'] * basisInfo[j][k]['x']) + (basisInfo[i][k]['y'] * basisInfo[j][k]['y'])));
+
             }
             kmat(i, j) = value;
         }
+    }
+
+    for (int i : edges) {
+        for (int j = 0; j < B; j++) {
+            kmat(i, j) = 0;
+            kmat(j, i) = 0;
+        }
+        fmat(i) = 0;
+        kmat(i, i) = 1;
     }
     SparseMatrix<float> ksmat = kmat.sparseView(1e-5);
     ConjugateGradient<SparseMatrix<float>, Lower|Upper> slv;

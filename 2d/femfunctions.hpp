@@ -13,5 +13,5 @@ using basis = array<array<int, B>, B>;
 using mesh = vector<tuple<float, float>>;
 using basisMap = map<int, map<int, map<char, float>>>;
 
-basis sparseMat();
+vector<int> edgeNodes();
 basisMap basisHash();

@@ -13,11 +13,10 @@ xpoints = data[:, 0]
 ypoints = data[:, 1]
 zpoints = data[:, 2]
 
+ax = plt.axes(projection = "3d")
 xi = np.linspace(xpoints.min(), xpoints.max(), 200)  # 50 points along x
 yi = np.linspace(ypoints.min(), ypoints.max(), 200)  # 50 points along y
-
-ax = plt.axes(projection = "3d")
-X, Y = np.meshgrid(xi, yi)
+X, Y = np.meshgrid(xpoints, ypoints)
 Z = griddata((xpoints, ypoints), zpoints, (X, Y), method='cubic')
 ax.plot_surface(X, Y, Z)
 plt.show()
