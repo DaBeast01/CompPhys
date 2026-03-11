@@ -57,7 +57,6 @@ basisMap basisHash() {
     float phs = 1/h;
     float nh = -2/h;
     float ph = 2/h;
-    cout << nhs << ' ' << phs << ' ' << nh << ' ' << ph << endl;
     for (int i = 0; i < B; i++) {
 
         // Which node in the row it is (index 0)

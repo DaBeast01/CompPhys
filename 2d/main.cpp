@@ -91,9 +91,9 @@ vector<float> functcalc(mesh points) {
     for (int i = 0; i < B; i++) {
         x = get<0>(points[i]);
         y = get<1>(points[i]);
-        //printf("(%f, %f)\n", x, y);
-        //function is e^xy
-        fmat.push_back(A*((float)(2*pow(4*atan(1), 2)*sin(4*atan(1)*x)*sin(4*atan(1)*y))));
+        // Put forcing function here
+        // I should generate these like I did for the kmat, but im lazy and just multiplying it by 2 is close enough
+        fmat.push_back(2*A*((float)(2*pow(4*atan(1), 2)*sin(4*atan(1)*x)*sin(4*atan(1)*y))));
     }
     return fmat;
 }
