@@ -31,7 +31,6 @@ int main() {
             vector<int> matching = basisCompare(i, j, basisInfo);
             for (int k : matching) {
                 value += (A*((basisInfo[i][k]['x'] * basisInfo[j][k]['x']) + (basisInfo[i][k]['y'] * basisInfo[j][k]['y'])));
-
             }
             kmat(i, j) = value;
         }

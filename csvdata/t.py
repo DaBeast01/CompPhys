@@ -41,6 +41,13 @@ xpoints25 = data25[:, 0]
 ypoints25 = data25[:, 1]
 zpoints25 = data25[:, 2]
 
+ax = plt.axes(projection = "3d")
+xi = np.linspace(xpoints25.min(), xpoints25.max(), 200)  # 50 points along x
+yi = np.linspace(ypoints25.min(), ypoints25.max(), 200)  # 50 points along y
+X, Y = np.meshgrid(xpoints25, ypoints25)
+Z = griddata((xpoints25, ypoints25), zpoints25, (X, Y), method='cubic')
+ax.plot_surface(X, Y, Z)
+
 X5, Y5 = np.meshgrid(xpoints5, ypoints5)
 X10, Y10 = np.meshgrid(xpoints10, ypoints10)
 X15, Y15 = np.meshgrid(xpoints15, ypoints15)
@@ -53,11 +60,11 @@ Z15 = griddata((xpoints15, ypoints15), zpoints15, (X15, Y15), method='cubic')
 Z20 = griddata((xpoints20, ypoints20), zpoints20, (X20, Y20), method='cubic')
 Z25 = griddata((xpoints25, ypoints25), zpoints25, (X25, Y25), method='cubic')
 
-Za5 = np.sin(np.pi * X5) * np.sin(np.pi * Y5)
-Za10 = np.sin(np.pi * X10) * np.sin(np.pi * Y10)
-Za15 = np.sin(np.pi * X15) * np.sin(np.pi * Y15)
-Za20 = np.sin(np.pi * X20) * np.sin(np.pi * Y20)
-Za25 = np.sin(np.pi * X25) * np.sin(np.pi * Y25)
+Za5 = (np.sin(np.pi * X5) * np.sin(np.pi * Y5))/(2*pow(np.pi, 2))
+Za10 = (np.sin(np.pi * X10) * np.sin(np.pi * Y10))/(2*pow(np.pi, 2))
+Za15 = (np.sin(np.pi * X15) * np.sin(np.pi * Y15))/(2*pow(np.pi, 2))
+Za20 = (np.sin(np.pi * X20) * np.sin(np.pi * Y20))/(2*pow(np.pi, 2))
+Za25 = (np.sin(np.pi * X25) * np.sin(np.pi * Y25))/(2*pow(np.pi, 2))
 
 
 def l2_error_2d_grid(z_pred, z_exact, x=None, y=None):
