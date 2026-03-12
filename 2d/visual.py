@@ -13,10 +13,17 @@ xpoints = data[:, 0]
 ypoints = data[:, 1]
 zpoints = data[:, 2]
 
-ax = plt.axes(projection = "3d")
-xi = np.linspace(xpoints.min(), xpoints.max(), 200)  # 50 points along x
-yi = np.linspace(ypoints.min(), ypoints.max(), 200)  # 50 points along y
-X, Y = np.meshgrid(xpoints, ypoints)
-Z = griddata((xpoints, ypoints), zpoints, (X, Y), method='cubic')
-ax.plot_surface(X, Y, Z)
+grid_size = 300
+xi = np.linspace(-1, 1, grid_size)
+yi = np.linspace(-1, 1, grid_size)
+Xi, Yi = np.meshgrid(xi, yi)
+Zi = griddata((xpoints, ypoints), zpoints, (Xi, Yi), method='cubic')
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+surf = ax.plot_surface(Xi, Yi, Zi, cmap='viridis', shade=True)
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('u')
+plt.title('FEM Solution (Highest Resolution)')
 plt.show()

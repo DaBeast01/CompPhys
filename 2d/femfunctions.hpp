@@ -15,4 +15,3 @@ using basisMap = map<int, map<int, map<char, float>>>;
 
 vector<int> edgeNodes();
 basisMap basisHash();
-
